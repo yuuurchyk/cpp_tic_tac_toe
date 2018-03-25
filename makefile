@@ -7,6 +7,7 @@ PRG_NAME = tic_tac_toe
 
 READ_DIR = Read
 FIELD_DIR = Field
+PLAYER_DIR = Player
 
 OBJ = $(addprefix $(OBJ_DIR)/,\
 main.o\
@@ -14,6 +15,10 @@ main.o\
 OBJ += $(addprefix $(OBJ_DIR)/,\
 field.o\
 field_instance.o\
+)
+OBJ += $(addprefix $(OBJ_DIR)/,\
+abstract_player.o\
+human_player.o\
 )
 
 all: init $(PRG_NAME)
@@ -29,6 +34,9 @@ $(OBJ_DIR)/%.o: %.cpp $(READ_DIR)/*.h
 	$(CXX) $(FLAGS) -c $< -o $@
 
 $(OBJ_DIR)/%.o: $(FIELD_DIR)/%.cpp $(FIELD_DIR)/*.h
+	$(CXX) $(FLAGS) -c $< -o $@
+
+$(OBJ_DIR)/%.o: $(PLAYER_DIR)/%.cpp $(PLAYER_DIR)/*.h
 	$(CXX) $(FLAGS) -c $< -o $@
 
 .PHONY: clean

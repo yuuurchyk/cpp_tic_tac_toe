@@ -31,6 +31,7 @@ namespace Field{
 
         bool is_winner(char *winner) const;
         bool is_draw() const;
+        int get_free_cells_left() const;
     private:
         std::vector<std::vector<char> > field;
         int free_cells_left;

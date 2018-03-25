@@ -54,6 +54,7 @@ bool FieldInstance::set(pair<int, int> cell, char value){
 
     field[cell.first][cell.second] = value;
     free_cells_left--;
+    return true;
 }
 
 bool FieldInstance::is_winner(char *winner) const{
@@ -90,4 +91,8 @@ bool FieldInstance::is_winner(char *winner) const{
 bool FieldInstance::is_draw() const{
     char tmp;
     return free_cells_left == 0 && !is_winner(&tmp);
+}
+
+int FieldInstance::get_free_cells_left() const{
+    return free_cells_left;
 }
