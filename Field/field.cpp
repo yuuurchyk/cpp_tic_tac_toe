@@ -17,8 +17,8 @@ const char
 
 const std::set<char>
     Field::kPlayersTokens{
-        kFirstPlayer,
-        kSecondPlayer
+        Field::kFirstPlayer,
+        Field::kSecondPlayer
     };
 
 bool Field::valid(std::pair<int, int> cell){
@@ -27,4 +27,10 @@ bool Field::valid(std::pair<int, int> cell){
         cell.first < Field::kN &&
         cell.second >= 0 &&
         cell.second < Field::kN;
+}
+
+char Field::get_opposite_player(char player){
+    if(player == Field::kFirstPlayer)
+        return Field::kSecondPlayer;
+    return Field::kFirstPlayer;
 }

@@ -14,6 +14,9 @@ namespace Field{
         kFirstPlayer,
         kSecondPlayer,
         kEmpty;
+
+    char get_opposite_player(char current_player);
+
     extern const std::set<char>
         kPlayersTokens;
 

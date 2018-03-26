@@ -14,21 +14,23 @@ namespace FieldTree{
     public:
         FieldTreeSimple(
             Field::FieldInstance field,
-            char value
+            char player
         );
 
-        int get_winning(char value) const;
+        int get_number_of_winning_potisions(char player) const;
         Field::FieldInstance get_field() const;
 
         std::pair<int, int> predict() const;
     private:
+        int get_balance(const FieldTreeSimple &child) const;
+
+        const Field::FieldInstance field_;
+        const char player_, opposite_player_;
+
+        std::vector<FieldTreeSimple> children_;
+        std::map<char, int> winnings_;
+
         void grow();
-
-        Field::FieldInstance field;
-        std::vector<FieldTreeSimple> children;
-
-        std::map<char, int> winnings;
-        char value, reversed_value;
     };
 }
 
