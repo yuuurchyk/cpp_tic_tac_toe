@@ -20,15 +20,15 @@ HumanPlayer::HumanPlayer(
     {}
 
 void HumanPlayer::make_move(){
-    std::string prompt{"Player " + name + ", enter your coordinates"};
-    static const std::string fail{"Invalid characters"};
+    std::string prompt{"Player " + name + ", enter your coordinates\n"};
+    static const std::string fail{"Invalid characters\n"};
 
-    while(true){
+    for(bool was = false;; was=true){
         std::pair<int, int> cell =
             Read::read_pair_with_message<int, int>(
                 in_strm,
                 out_strm,
-                prompt,
+                was? "" : prompt,
                 fail
             );
         

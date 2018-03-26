@@ -32,6 +32,29 @@ namespace FieldTree{
 
         void grow();
     };
+
+    class FieldTreeExtended{
+    public:
+        FieldTreeExtended(
+            Field::FieldInstance field,
+            char player,
+            char target_player
+        );
+    
+        bool is_winning() const;
+        Field::FieldInstance get_field() const;
+
+        std::pair<int, int> predict() const;
+    private:
+        const Field::FieldInstance field_;
+        const char player_, opposite_player_;
+        const char target_player_;
+
+        bool is_winning_{false};
+        std::vector<FieldTreeExtended> children_;
+
+        void grow();
+    };
 }
 
 #endif

@@ -10,7 +10,7 @@ namespace Read{
         std::string fail_msg
     )
     {
-        output << prompt_msg << std::endl;
+        output << prompt_msg;
         
         while(true){
             std::string line; getline(input, line);
@@ -26,7 +26,7 @@ namespace Read{
             )
                 return std::make_pair(first, second);
             else
-                output << fail_msg << std::endl;
+                output << fail_msg;
         }
     }
 }

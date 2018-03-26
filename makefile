@@ -24,9 +24,11 @@ abstract_player.o\
 human_player.o\
 silly_bot.o\
 easy_bot.o\
-get_easy_bot_player_name.o\
+medium_bot.o\
 get_human_player_name.o\
 get_silly_bot_player_name.o\
+get_easy_bot_player_name.o\
+get_medium_bot_player_name.o\
 )
 OBJ += $(addprefix $(OBJ_DIR)/,\
 get_random_number.o\
@@ -36,6 +38,7 @@ game.o\
 )
 OBJ += $(addprefix $(OBJ_DIR)/,\
 field_tree_simple.o\
+field_tree_extended.o\
 )
 
 all: init $(PRG_NAME)

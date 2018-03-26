@@ -16,6 +16,9 @@ namespace Game{
             Player::AbstractPlayer *second
         );
 
+        char is_winner() const;
+        bool is_draw() const;
+
         bool make_move();
         std::string get_player_name() const;
     private:

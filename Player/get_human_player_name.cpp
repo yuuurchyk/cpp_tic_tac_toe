@@ -6,8 +6,8 @@ const std::string Player::get_human_player_name(
     char player
 )
 {
-    static const std::string fail{"Name cannot be only whitespaces"};
-    std::string prompt{"Player " + std::string(1, player) + ", please enter your name"};
+    static const std::string fail{"Name cannot contain whitespaces\n"};
+    std::string prompt{"Player " + std::string(1, player) + ", please enter your name\n"};
 
     return Read::read_with_message<std::string>(
         in_strm,

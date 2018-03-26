@@ -26,3 +26,11 @@ bool GameInstance::make_move(){
 std::string GameInstance::get_player_name() const{
     return players[index]->get_name();
 }
+
+char GameInstance::is_winner() const{
+    return field->is_winner();
+}
+
+bool GameInstance::is_draw() const{
+    return field->is_draw();
+}
