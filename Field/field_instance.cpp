@@ -57,7 +57,7 @@ bool FieldInstance::set(pair<int, int> cell, char value){
     return true;
 }
 
-bool FieldInstance::is_winner(char *winner) const{
+char FieldInstance::is_winner() const{
     for(int i = 0; i < kN; i++)
         for(int j = 0; j < kN; j++){
 
@@ -78,19 +78,16 @@ bool FieldInstance::is_winner(char *winner) const{
                         ok = false;
                 }
 
-                if(ok){
-                    *winner = field[i][j];
-                    return true;
-                }
+                if(ok)
+                    return field[i][j];
             }
         }
     
-    return false;
+    return kEmpty;
 }
 
 bool FieldInstance::is_draw() const{
-    char tmp;
-    return free_cells_left == 0 && !is_winner(&tmp);
+    return free_cells_left == 0 && is_winner() == kEmpty;
 }
 
 int FieldInstance::get_free_cells_left() const{

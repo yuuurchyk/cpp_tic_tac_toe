@@ -6,31 +6,21 @@ HumanPlayer::HumanPlayer(
     Field::FieldInstance &field,
     std::istream &in_strm,
     std::ostream &out_strm,
-    bool is_first
-) :
-    AbstractPlayer(field, in_strm, out_strm, is_first)
+    bool is_first,
+    const std::string name
+):
+    AbstractPlayer
+    (
+        field,
+        in_strm,
+        out_strm,
+        is_first,
+        name
+    )
     {}
 
-// std::string HumanPlayer::get_name(){
-//     const std::string prompt =
-//         "Player " +
-//         std::string(1, value) +
-//         ", enter your name:";
-//     const std::string fail{"Name cannot consist only of whitespaces"};
-
-//     return Read::read_with_message<std::string>(
-//         in_strm,
-//         out_strm,
-//         prompt,
-//         fail
-//     );
-// }
-
 void HumanPlayer::make_move(){
-    const std::string prompt = 
-        "Player " +
-        std::string(1, value) +
-        ", enter your coordinates";
+    std::string prompt{"Player " + name + ", enter your coordinates"};
     static const std::string fail{"Invalid characters"};
 
     while(true){

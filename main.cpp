@@ -5,41 +5,46 @@
 
 #include "Field/Field.h"
 #include "Player/Player.h"
-
-using std::cout;
-using std::cin;
-using std::endl;
-using namespace Player;
-using namespace Field;
+#include "Read/Read.h"
+#include "Game/Game.h"
 
 int main(){
-    FieldInstance field;
+    std::istream &in_strm = std::cin;
+    std::ostream &out_strm = std::cout;
 
-    std::vector<HumanPlayer> players;
-    players.emplace_back(field, cin, cout, true);
-    players.emplace_back(field, cin, cout, false);
+    Field::FieldInstance field;
 
-    char winner;
-    for
-    (
-        int index = 0;
-        !field.is_winner(&winner) && field.get_free_cells_left() > 0;
-        index ^= 1
-    )
-    {
-        cout << field << endl;
-        players[index].make_move();
-    }
+    Player::HumanPlayer human{
+        field,
+        in_strm,
+        out_strm,
+        true,
+        Player::get_human_player_name(in_strm, out_strm, Field::kFirstPlayer)
+    };
+    Player::SillyBot bot{
+        field,
+        in_strm,
+        out_strm,
+        false,
+        Player::get_silly_bot_player_name()
+    };
 
-    cout << field << endl;
+    Game::GameInstance game{
+        &field,
+        &human,
+        &bot
+    };
+
+    do out_strm << field;
+    while(game.move());
 
     if(field.is_draw())
-        cout << "Draw" << endl;
-    else{
-        char winner;
-        field.is_winner(&winner);
-        cout << winner << " has won " << endl;
-    }
-
+        out_strm << "Draw :)" << std::endl;
+    else
+        if(field.is_winner() == Field::kFirstPlayer)
+            out_strm << "Winner: " << human.get_name() << std::endl;
+        else
+            out_strm << "Winner: " << bot.get_name() << std::endl;
+    
     return 0;
 }

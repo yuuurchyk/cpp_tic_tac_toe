@@ -29,7 +29,7 @@ namespace Field{
         char get(std::pair<int, int> cell) const;
         bool set(std::pair<int, int> cell, char value);
 
-        bool is_winner(char *winner) const;
+        char is_winner() const;
         bool is_draw() const;
         int get_free_cells_left() const;
     private:
