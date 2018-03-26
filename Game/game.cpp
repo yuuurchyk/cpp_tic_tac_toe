@@ -13,12 +13,16 @@ GameInstance::GameInstance(
     players.push_back(second);
 }
 
-bool GameInstance::move(){
+bool GameInstance::make_move(){
     if(field->get_free_cells_left() == 0)return false;
     if(field->is_winner() != Field::kEmpty)return false;
 
-    players[index]->make_move();
     index ^= 1;
+    players[index]->make_move();
 
     return true;
+}
+
+std::string GameInstance::get_player_name() const{
+    return players[index]->get_name();
 }

@@ -24,10 +24,9 @@ void SillyBot::make_move(){
         std::pair<int, int> cell =
             std::make_pair(
                 Common::get_random_number(0, Field::kN - 1),
-                Common::get_random_number(0, Field::kN)
+                Common::get_random_number(0, Field::kN - 1)
             );
         
         if(field.set(cell, value))return;
-        out_strm << cell.first << " " << cell.second << std::endl;
     }
 }

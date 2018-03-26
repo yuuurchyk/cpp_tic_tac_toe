@@ -21,12 +21,12 @@ int main(){
         true,
         Player::get_human_player_name(in_strm, out_strm, Field::kFirstPlayer)
     };
-    Player::SillyBot bot{
+    Player::MediumBot bot{
         field,
         in_strm,
         out_strm,
         false,
-        Player::get_silly_bot_player_name()
+        Player::get_medium_bot_player_name()
     };
 
     Game::GameInstance game{
@@ -35,8 +35,8 @@ int main(){
         &bot
     };
 
-    do out_strm << field;
-    while(game.move());
+    do out_strm << field << std::endl;
+    while(game.make_move());
 
     if(field.is_draw())
         out_strm << "Draw :)" << std::endl;

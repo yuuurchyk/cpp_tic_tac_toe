@@ -16,13 +16,13 @@ namespace Game{
             Player::AbstractPlayer *second
         );
 
-        bool move();
-
+        bool make_move();
+        std::string get_player_name() const;
     private:
         Field::FieldInstance *field;
         std::vector<Player::AbstractPlayer*> players;
 
-        int index{0};
+        int index{1};
     };
 }
 
