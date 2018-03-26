@@ -64,9 +64,9 @@ namespace Player{
         void make_move();
     };
 
-    class MediumBot : public AbstractPlayer{
+    class EasyBot : public AbstractPlayer{
     public:
-        MediumBot(
+        EasyBot(
             Field::FieldInstance &field,
             std::istream &in_strm,
             std::ostream &out_strm,
@@ -86,8 +86,8 @@ namespace Player{
     extern const std::vector<std::string> silly_bot_names;
     const std::string get_silly_bot_player_name();
 
-    extern const std::vector<std::string> medium_bot_names;
-    const std::string get_medium_bot_player_name();
+    extern const std::vector<std::string> easy_bot_names;
+    const std::string get_easy_bot_player_name();
 }
 
 #endif

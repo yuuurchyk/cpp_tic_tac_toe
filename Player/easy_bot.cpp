@@ -2,7 +2,7 @@
 
 using namespace Player;
 
-MediumBot::MediumBot(
+EasyBot::EasyBot(
     Field::FieldInstance &field,
     std::istream &in_strm,
     std::ostream &out_strm,
@@ -19,7 +19,7 @@ MediumBot::MediumBot(
     )
     {}
 
-void MediumBot::make_move(){
+void EasyBot::make_move(){
     FieldTree::FieldTreeSimple tree{Field::FieldInstance{field}, value};
     field.set(tree.predict(), value); 
 }

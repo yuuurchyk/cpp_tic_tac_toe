@@ -23,8 +23,8 @@ OBJ += $(addprefix $(OBJ_DIR)/,\
 abstract_player.o\
 human_player.o\
 silly_bot.o\
-medium_bot.o\
-get_medium_bot_player_name.o\
+easy_bot.o\
+get_easy_bot_player_name.o\
 get_human_player_name.o\
 get_silly_bot_player_name.o\
 )

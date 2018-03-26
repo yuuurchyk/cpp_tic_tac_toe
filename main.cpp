@@ -21,12 +21,12 @@ int main(){
         true,
         Player::get_human_player_name(in_strm, out_strm, Field::kFirstPlayer)
     };
-    Player::MediumBot bot{
+    Player::EasyBot bot{
         field,
         in_strm,
         out_strm,
         false,
-        Player::get_medium_bot_player_name()
+        Player::get_easy_bot_player_name()
     };
 
     Game::GameInstance game{
