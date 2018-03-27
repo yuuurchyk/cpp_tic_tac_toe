@@ -6,6 +6,10 @@
 #include <utility>
 #include <climits>
 #include <cmath>
+#include <mutex>
+#include <thread>
+
+#include <iostream>
 
 #include "../Field/Field.h"
 
@@ -38,17 +42,30 @@ namespace FieldTree{
         FieldTreeExtended(
             Field::FieldInstance field,
             char player,
-            char target_player
+            char target_player,
+            bool is_root=true
         );
     
         bool is_winning() const;
         Field::FieldInstance get_field() const;
 
         std::pair<int, int> predict() const;
+
+        static void add
+        (
+            Field::FieldInstance field,
+            char player,
+            char target_player,
+            bool is_root,
+            std::vector<FieldTreeExtended> &target,
+            std::mutex &mux
+        );
     private:
         const Field::FieldInstance field_;
         const char player_, opposite_player_;
         const char target_player_;
+
+        const bool is_root_;
 
         bool is_winning_{false};
         std::vector<FieldTreeExtended> children_;
