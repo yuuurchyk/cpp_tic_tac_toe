@@ -9,8 +9,6 @@
 #include <mutex>
 #include <thread>
 
-#include <iostream>
-
 #include "../Field/Field.h"
 
 namespace FieldTree{
@@ -51,16 +49,16 @@ namespace FieldTree{
 
         std::pair<int, int> predict() const;
 
-        static void add
+    private:
+        void add
         (
             Field::FieldInstance field,
             char player,
             char target_player,
             bool is_root,
-            std::vector<FieldTreeExtended> &target,
             std::mutex &mux
         );
-    private:
+
         const Field::FieldInstance field_;
         const char player_, opposite_player_;
         const char target_player_;

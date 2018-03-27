@@ -87,11 +87,11 @@ void FieldTreeExtended::grow(){
                 tmp.set(cell, player_);
                 threads.emplace_back(
                     &FieldTreeExtended::add,
+                    this,
                     tmp,
                     opposite_player_,
                     target_player_,
                     false,
-                    std::ref(children_),
                     std::ref(mux));
             }
         
@@ -118,10 +118,9 @@ void FieldTreeExtended::add(
     char player,
     char target_player,
     bool is_root,
-    std::vector<FieldTreeExtended> &target,
     std::mutex &mux
 )
 {
     std::lock_guard<std::mutex> lck(mux);
-    target.emplace_back(field, player, target_player, is_root);
+    children_.emplace_back(field, player, target_player, is_root);
 }
