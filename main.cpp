@@ -3,6 +3,7 @@
 #include "Player/Player.h"
 #include "Field/Field.h"
 #include "Game/Game.h"
+#include "PlayerFactory/PlayerFactory.h"
 
 int main(){
     std::istream &in_strm = std::cin;
@@ -10,27 +11,11 @@ int main(){
 
     Field::FieldInstance field;
 
-    Player::HumanPlayer human(
-        field,
-        in_strm,
-        out_strm,
-        Tokens::Player::First,
-        Player::get_human_player_name(in_strm,out_strm,Tokens::Player::First)
-    );
+    Player::AbstractPlayer *first, *second;
+    
+    PlayerFactory::fill(in_strm, out_strm, field, &first, &second);
 
-    Player::MediumBot bot(
-        field,
-        in_strm,
-        out_strm,
-        Tokens::Player::Second,
-        Player::get_medium_bot_player_name()
-    );
-
-    Game::GameInstance game(
-        &field,
-        &human,
-        &bot
-    );
+    Game::GameInstance game(&field, first, second);
 
     do out_strm << field << std::endl;
     while(game.make_move());

@@ -13,6 +13,7 @@ FIELD_DIR = Field
 FIELD_TREE_DIR = FieldTree
 PLAYER_DIR = Player
 GAME_DIR = Game
+PLAYER_FACTORY_DIR = PlayerFactory
 
 OBJ = $(addprefix $(OBJ_DIR)/,\
 main.o\
@@ -41,6 +42,9 @@ medium_bot.o\
 )
 OBJ += $(addprefix $(OBJ_DIR)/,\
 game.o\
+)
+OBJ += $(addprefix $(OBJ_DIR)/,\
+fill.o\
 )
 
 all: init $(PRG_NAME)
@@ -74,6 +78,9 @@ $(OBJ_DIR)/%.o: $(PLAYER_DIR)/%.cpp $(PLAYER_DIR)/*.h
 	$(CXX) $(FLAGS) -c $< -o $@
 
 $(OBJ_DIR)/%.o: $(GAME_DIR)/%.cpp $(GAME_DIR)/*.h
+	$(CXX) $(FLAGS) -c $< -o $@
+
+$(OBJ_DIR)/%.o: $(PLAYER_FACTORY_DIR)/%.cpp $(PLAYER_FACTORY_DIR)/*.h
 	$(CXX) $(FLAGS) -c $< -o $@
 
 .PHONY: clean
