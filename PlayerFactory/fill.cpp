@@ -10,7 +10,7 @@ void PlayerFactory::fill(
 {
     std::string explanation = std::string(
 "human - human player\n\
-medium - medium bot\n"
+medium - medium bot (you will never win)\n"
     );
     std::string fail{"Wrong format"};
 

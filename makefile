@@ -1,5 +1,5 @@
 CXX = g++
-FLAGS = -g -pthread -std=c++14
+FLAGS = -O3 -pthread -std=c++14
 
 OBJ_DIR = obj
 BIN_DIR = bin
