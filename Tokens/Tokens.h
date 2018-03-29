@@ -4,7 +4,6 @@
 #include <cstddef>
 #include <ostream>
 
-#include "../Field/Field.h"
 #include "../Exceptions/Exceptions.h"
 
 namespace Tokens{
@@ -14,14 +13,16 @@ namespace Tokens{
 
     extern const size_t kHashBase;
 
-    char getChar(const Cell &cell);
     size_t getHash(const Cell &cell);
 
     enum class Player{
         First, Second
     };
 
+    Player opposite(const Player &player);
+
     char getChar(const Player &player);
+    char getChar(const Cell &cell);
 
     Cell convert(const Player &player);
     Player convert(const Cell &cell);

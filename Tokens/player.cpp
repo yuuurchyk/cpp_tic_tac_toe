@@ -17,3 +17,9 @@ std::ostream& Tokens::operator<<(std::ostream &strm, const Player &player){
     strm << getChar(player);
     return strm;
 }
+
+Player Tokens::opposite(const Player &player){
+    if(player == Player::First)
+        return Player::Second;
+    return Player::First;
+}

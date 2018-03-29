@@ -4,7 +4,7 @@ using namespace Field;
 using std::vector;
 using std::pair;
 using std::make_pair;
-using Exceptions::SameFieldsExceptions;
+using Exceptions::SameFieldsException;
 
 const int
     Field::kN = 3;
@@ -17,7 +17,7 @@ const vector<pair<int, int>>
         {1, -1}
     };
 
-vector<pair<int, int>> Field::initkCells(){
+vector<pair<int, int>> Field::initkCellsCoordinates(){
     vector<pair<int, int>> result;
     
     for(int i = 0; i < kN; i++)
@@ -28,7 +28,7 @@ vector<pair<int, int>> Field::initkCells(){
 }
 
 const vector<pair<int, int>>
-    Field::kCells = initkCells();
+    Field::kCellsCoordinates = initkCellsCoordinates();
 
 std::ostream& Field::operator<<(
     std::ostream &strm,
@@ -57,9 +57,9 @@ pair<int, int> Field::get_difference(
     const FieldInstance &r
 )
 {
-    for(auto &it: kCells)
+    for(auto &it: kCellsCoordinates)
         if(l.get(it) != r.get(it))
             return it;
     
-    throw SameFieldsExceptions();
+    throw SameFieldsException();
 }

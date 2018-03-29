@@ -1,9 +1,9 @@
 #include "Tokens.h"
 
-using namespace Tokens;
+using namespace std;
 
 const size_t
-    Tokens::kHashBase = Field::kN;
+    Tokens::kHashBase = 3;
 
 char Tokens::getChar(const Cell &cell){
     switch(cell){
