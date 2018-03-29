@@ -10,6 +10,7 @@ using Tokens::opposite;
 using Exceptions::NoStorageProvidedException;
 using Exceptions::InvalidPredictionException;
 using Exceptions::FullFieldAssignmentException;
+using Exceptions::InternalLogicException;
 
 MediumBotFieldTree::MediumBotFieldTree(
     const FieldInstance &field,
@@ -138,4 +139,6 @@ std::pair<int, int> MediumBotFieldTree::predict() const{
     for(auto child: children_)
         if(child->is_winning())
             return get_difference(field_, child->get_field());
+    
+    throw InternalLogicException();
 }

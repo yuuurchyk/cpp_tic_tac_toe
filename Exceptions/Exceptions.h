@@ -53,6 +53,34 @@ namespace Exceptions{
             return "Cannot predict the move for opposite player";
         }
     };
+
+    class InternalLogicException: public std::exception{
+        public:
+        const char * what() const throw(){
+            return "Something in internal logic went wrong";
+        }
+    };
+
+    class SamePlayersException: public std::exception{
+        public:
+        const char * what() const throw(){
+            return "There cannot be 2 first or 2 second players simultaneously";
+        }
+    };
+
+    class NoPlayerProvidedException: public std::exception{
+        public:
+        const char * what() const throw(){
+            return "Player cannot be nullpointer";
+        }
+    };
+
+    class NoFieldProvidedException: public std::exception{
+        public:
+        const char * what() const throw(){
+            return "Field cannot be nullpointer";
+        }
+    };
 }
 
 #endif
