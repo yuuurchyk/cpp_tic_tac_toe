@@ -6,6 +6,11 @@
 
 namespace Common{
     int get_random_number(int l, int r);
+
+    template<class T>
+    T binary_power(T number, int power);
 }
+
+#include "binary_power.h"
 
 #endif
