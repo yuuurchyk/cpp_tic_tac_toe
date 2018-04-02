@@ -6,11 +6,7 @@
 #include <string>
 #include <algorithm>
 
-namespace Read{
-    template<class T>
-    T read_without_message(std::istream &input);
-    // reads instance of type T and returns it.
-    // if user entered wrong data, asks again
+namespace TicTacToe{
     template<class T>
     T read_with_message(
         std::istream &input,
@@ -18,12 +14,7 @@ namespace Read{
         std::string prompt_msg,
         std::string fail_msg
     );
-    // the same but with alerting message
 
-    template<class F, class S>
-    std::pair<F, S> read_pair_without_message(std::istream &input);
-    // reads pair of objects iof types F and S
-    // if user entered wrong data, asks again
     template<class F, class S>
     std::pair<F, S> read_pair_with_message(
         std::istream &input,
@@ -31,12 +22,9 @@ namespace Read{
         std::string prompt_msg,
         std::string fail_msg
     );
-    // the same but with alerting message
 }
 
 #include "read_pair_with_message_imp.h"
-#include "read_pair_without_message_imp.h"
 #include "read_with_message_imp.h"
-#include "read_without_message_imp.h"
 
 #endif

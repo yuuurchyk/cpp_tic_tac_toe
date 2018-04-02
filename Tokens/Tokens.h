@@ -6,28 +6,23 @@
 
 #include "../Exceptions/Exceptions.h"
 
-namespace Tokens{
+namespace TicTacToe{
     enum class Cell{
         First, Second, Empty
     };
-
-    extern const size_t kHashBase;
-
-    size_t getHash(const Cell &cell);
-
     enum class Player{
         First, Second
     };
 
-    Player opposite(const Player &player);
-
-    char getChar(const Player &player);
+    extern const size_t kHashBase;
+    size_t getHash(const Cell &cell);
     char getChar(const Cell &cell);
-
-    Cell convert(const Player &player);
     Player convert(const Cell &cell);
-
     std::ostream& operator<<(std::ostream &strm, const Cell &cell);
+
+    Player opposite(const Player &player);
+    char getChar(const Player &player);
+    Cell convert(const Player &player);
     std::ostream& operator<<(std::ostream &strm, const Player &player);
 }
 

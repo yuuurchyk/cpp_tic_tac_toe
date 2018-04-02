@@ -5,31 +5,34 @@
 #include "Game/Game.h"
 #include "PlayerFactory/PlayerFactory.h"
 
+using namespace TicTacToe;
+using std::cin;
+using std::cout;
+using std::endl;
+
 int main(){
-    std::istream &in_strm = std::cin;
-    std::ostream &out_strm=  std::cout;
 
-    Field::FieldInstance field;
+    Field field;
 
-    Player::AbstractPlayer *first, *second;
+    AbstractPlayer *first, *second;
     
-    PlayerFactory::fill(in_strm, out_strm, field, &first, &second);
+    fillPlayer(cin, cout, field, Player::First, &first);
+    fillPlayer(cin, cout, field, Player::Second, &second);
+    
+    Game game(&field, first, second);
 
-    Game::GameInstance game(&field, first, second);
-
-    do out_strm << field << std::endl;
+    do cout << field << endl;
     while(game.make_move());
 
     if(field.is_draw())
-        out_strm << "Draw :)" << std::endl;
-    else if (field.is_winner(Tokens::Player::First))
-        out_strm <<
-            game.get_player_name(Tokens::Player::First) <<
-            " won" << std::endl;
-    else if(field.is_winner(Tokens::Player::Second))
-        out_strm <<
-            game.get_player_name(Tokens::Player::Second) <<
-            " won" << std::endl;
+        cout << "Draw :)" << endl;
+    else if (field.is_winner(Player::First))
+        cout << game.get_player_name(Player::First) << " won" << endl;
+    else if(field.is_winner(Player::Second))
+        cout << game.get_player_name(Player::Second) << " won" << endl;
+
+    delete first;
+    delete second;
 
     return 0;
 }

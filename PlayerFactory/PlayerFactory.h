@@ -9,13 +9,13 @@
 #include "../Player/Player.h"
 #include "../Field/Field.h"
 
-namespace PlayerFactory{
-    void fill(
+namespace TicTacToe{
+    void fillPlayer(
         std::istream &in_strm,
         std::ostream &out_strm,
-        Field::FieldInstance &field,
-        Player::AbstractPlayer ** first,
-        Player::AbstractPlayer ** second
+        Field &field,
+        const Player &player,
+        AbstractPlayer **target
     );
 }
 

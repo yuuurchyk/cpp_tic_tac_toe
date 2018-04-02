@@ -15,37 +15,18 @@ PLAYER_DIR = Player
 GAME_DIR = Game
 PLAYER_FACTORY_DIR = PlayerFactory
 
-OBJ = $(addprefix $(OBJ_DIR)/,\
-main.o\
-)
+OBJ = $(addprefix $(OBJ_DIR)/, main.o)
+OBJ += $(addprefix $(OBJ_DIR)/, Common.o)
+OBJ += $(addprefix $(OBJ_DIR)/, Tokens.o)
+OBJ += $(addprefix $(OBJ_DIR)/, Field.o)
+OBJ += $(addprefix $(OBJ_DIR)/, MediumBotFieldTree.o)
 OBJ += $(addprefix $(OBJ_DIR)/,\
-get_random_number.o\
+AbstractPlayer.o\
+HumanPlayer.o\
+MediumBot.o\
 )
-OBJ += $(addprefix $(OBJ_DIR)/,\
-cell.o\
-player.o\
-tokens.o\
-)
-OBJ += $(addprefix $(OBJ_DIR)/,\
-field.o\
-field_instance.o\
-)
-OBJ += $(addprefix $(OBJ_DIR)/,\
-medium_bot_field_tree.o\
-)
-OBJ += $(addprefix $(OBJ_DIR)/,\
-abstract_player.o\
-get_human_player_name.o\
-get_medium_bot_player_name.o\
-human_player.o\
-medium_bot.o\
-)
-OBJ += $(addprefix $(OBJ_DIR)/,\
-game.o\
-)
-OBJ += $(addprefix $(OBJ_DIR)/,\
-fill.o\
-)
+OBJ += $(addprefix $(OBJ_DIR)/, Game.o)
+OBJ += $(addprefix $(OBJ_DIR)/, PlayerFactory.o)
 
 all: init $(PRG_NAME)
 

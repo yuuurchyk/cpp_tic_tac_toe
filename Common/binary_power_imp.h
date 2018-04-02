@@ -1,7 +1,7 @@
 #ifndef BINARY_POWER_H
 #define BINARY_POWER_H
 
-namespace Common{
+namespace TicTacToe{
     template<class T>
     T binary_power(T number, int power){
         if(power == 0)

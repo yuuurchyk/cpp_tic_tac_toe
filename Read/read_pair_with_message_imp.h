@@ -1,7 +1,7 @@
 #ifndef READ_PAIR_WITH_MESSAGE_IMP_H_
 #define READ_PAIR_WITH_MESSAGE_IMP_H_
 
-namespace Read{
+namespace TicTacToe{
     template<class F, class S> std::pair<F, S> read_pair_with_message
     (
         std::istream &input,

@@ -1,7 +1,7 @@
 #ifndef READ_WITH_MESSAGE_IMP_H_
 #define READ_WITH_MESSAGE_IMP_H_
 
-namespace Read{
+namespace TicTacToe{
     template<class T> T read_with_message(
         std::istream &input,
         std::ostream &output,

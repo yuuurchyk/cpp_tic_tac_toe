@@ -1,19 +1,9 @@
 #include "FieldTree.h"
 
-using namespace FieldTree;
-using Field::FieldInstance;
-using Field::kCellsCoordinates;
-using Field::get_difference;
-using Tokens::Player;
-using Tokens::convert;
-using Tokens::opposite;
-using Exceptions::NoStorageProvidedException;
-using Exceptions::InvalidPredictionException;
-using Exceptions::FullFieldAssignmentException;
-using Exceptions::InternalLogicException;
+using namespace TicTacToe;
 
 MediumBotFieldTree::MediumBotFieldTree(
-    const FieldInstance &field,
+    const Field &field,
     const Player &current_player,
     const Player &target_player
 ):
@@ -28,7 +18,7 @@ MediumBotFieldTree::MediumBotFieldTree(
 }
 
 MediumBotFieldTree::MediumBotFieldTree(
-    const FieldInstance &field,
+    const Field &field,
     const Player &current_player,
     const Player &target_player,
     std::map<size_t, MediumBotFieldTree * const> * const storage
@@ -79,7 +69,7 @@ void MediumBotFieldTree::grow(){
     for(auto &cell: kCellsCoordinates){
         if(field_.is_occupied(cell))continue;
 
-        FieldInstance tmp{field_};
+        Field tmp{field_};
         if(!tmp.set(cell, convert(current_player_))) continue;
 
         children_.push_back(get(tmp, opposite(current_player_), target_player_));
@@ -87,7 +77,7 @@ void MediumBotFieldTree::grow(){
 }
 
 MediumBotFieldTree * const MediumBotFieldTree::get(
-    const FieldInstance &field,
+    const Field &field,
     const Player &current_player,
     const Player &target_player
 )
@@ -122,7 +112,7 @@ bool MediumBotFieldTree::is_winning() const{
     return is_winning_;
 }
 
-const FieldInstance& MediumBotFieldTree::get_field() const{
+const Field& MediumBotFieldTree::get_field() const{
     return field_;
 }
 

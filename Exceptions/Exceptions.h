@@ -3,7 +3,7 @@
 
 #include <exception>
 
-namespace Exceptions{
+namespace TicTacToe{
 
     class ConvertionException : public std::exception{
     public:

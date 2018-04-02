@@ -11,28 +11,28 @@
 #include "../Tokens/Tokens.h"
 #include "../Exceptions/Exceptions.h"
 
-namespace Game{
-    class GameInstance{
+namespace TicTacToe{
+    class Game{
     public:
-        GameInstance(
-            Field::FieldInstance *field,
-            Player::AbstractPlayer *first,
-            Player::AbstractPlayer *second
+        Game(
+            Field *field,
+            AbstractPlayer *first,
+            AbstractPlayer *second
         );
 
         bool is_winner() const;
         bool is_draw() const;
-        bool is_winner(const Tokens::Player &player) const;
+        bool is_winner(const Player &player) const;
 
         bool make_move();
-        std::string get_player_name(const Tokens::Player &player) const;
+        std::string get_player_name(const Player &player) const;
     private:
-        Field::FieldInstance *field;
+        Field *field;
 
-        std::map<Tokens::Player, Player::AbstractPlayer*>
+        std::map<Player, AbstractPlayer*>
             players;
         
-        Tokens::Player current_player;
+        Player current_player;
     };
 }
 
