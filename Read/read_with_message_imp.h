@@ -15,7 +15,6 @@ namespace TicTacToe{
             std::stringstream line_strm(line);
 
             T result;
-            char tmp;
 
             if
             (

@@ -33,11 +33,11 @@ namespace TicTacToe{
             size_t hash_;
             std::vector<std::vector<Cell>> field_;
 
-            int free_cells_left_;
-
             bool is_draw_;
             bool is_winner_;
             Player winner_;
+
+            int free_cells_left_;
     };
 
     bool is_valid(std::pair<int, int> cell_coordinates);

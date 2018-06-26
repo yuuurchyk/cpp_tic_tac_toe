@@ -19,11 +19,12 @@ namespace TicTacToe{
         virtual void make_move() = 0;
         std::string get_name() const;
         const Player& get_player() const;
-    
-    protected:
-        Field &field;
 
+        virtual ~AbstractPlayer() = default;
+
+    protected:
         const Player player;
+        Field &field;
         const std::string name;
     };
 }

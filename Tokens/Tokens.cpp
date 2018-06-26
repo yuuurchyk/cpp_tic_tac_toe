@@ -1,3 +1,5 @@
+#include <exception>
+
 #include "Tokens.h"
 
 using namespace TicTacToe;
@@ -13,6 +15,8 @@ size_t TicTacToe::getHash(const Cell &cell){
             return 1;
         case Cell::Second:
             return 2;
+        default:
+            throw std::runtime_error("error while hashing");
     }
 }
 

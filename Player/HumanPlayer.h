@@ -22,6 +22,8 @@ namespace TicTacToe{
 
         void make_move();
 
+        ~HumanPlayer() = default;
+
     private:
         std::istream &in_strm;
         std::ostream &out_strm;

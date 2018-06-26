@@ -19,6 +19,8 @@ namespace TicTacToe{
             const std::string name
         );
 
+        ~MediumBot() = default;
+
         void make_move();
     };
 
