@@ -1,210 +1,129 @@
+#include <utility>
+
 #include "Field.h"
+#include "../Exceptions/FieldExceptions.h"
 
 using namespace TicTacToe;
-using std::vector;
-using std::pair;
-using std::make_pair;
 
-const int
-    TicTacToe::kN = 3;
+Field::Field(){}
 
-const vector<pair<int, int>>
-    TicTacToe::kDelta = {
-        {0, 1},
-        {1, 0},
-        {1, 1},
-        {1, -1}
-    };
-
-namespace{
-    vector<pair<int, int>> initkCellsCoordinates(){
-        vector<pair<int, int>> result;
-        
-        for(int i = 0; i < kN; i++)
-            for(int j = 0; j < kN; j++)
-                result.push_back(make_pair(i, j));
-        
-        return result;
-    }
+inline void Field::validate(size_t i, size_t j){
+    if(i >= kN || j >= kN)
+        throw FieldOutOfBoundsError();
 }
 
-const vector<pair<int, int>>
-    TicTacToe::kCellsCoordinates = initkCellsCoordinates();
-
-Field::Field():
-    is_draw_(false),
-    is_winner_(false),
-    winner_(Player::First),
-    free_cells_left_(kN * kN)
-{
-    field_.clear();
-    field_.resize(kN);
-
-    for(int i = 0; i < kN; i++)
-        field_[i].resize(kN, Cell::Empty);
-    
-    hash_ = 0;
-    size_t p = 1;
-
-    for(auto it: kCellsCoordinates){
-        hash_ += getHash(get(it)) * p;
-        p *= kHashBase;
-    }
-}
-
-Field::Field(const Field &other){
-    hash_ = other.hash_;
-    field_ = other.field_;
-
-    free_cells_left_ = other.free_cells_left_;
-
-    is_draw_ = other.is_draw_;
-    is_winner_ = other.is_winner_;
-    winner_ = other.winner_;
-}
-
-Field& Field::operator=(const Field &other){
-    if(&other == this)return *this;
-
-    hash_ = other.hash_;
-    field_ = other.field_;
-
-    free_cells_left_ = other.free_cells_left_;
-
-    is_draw_ = other.is_draw_;
-    is_winner_ = other.is_winner_;
-    winner_ = other.winner_;
-
-    return *this;
-}
-
-bool Field::is_draw() const{
-    return is_draw_;
-}
-
-bool Field::is_winner() const{
-    return is_winner_;
-}
-
-bool Field::is_winner(const Player &player) const{
-    if(!is_winner_)return false;
-    return winner_ == player;
-}
-
-Cell Field::get(const pair<int, int> &cell_coordinates) const{
-    if(!is_valid(cell_coordinates))throw InvalidCellException();
-
-    return field_[cell_coordinates.first][cell_coordinates.second];
-}
-
-bool Field::set(
-    const pair<int, int> &cell_coordinates,
-    const Cell &cell
-)
-{
-    if(!is_valid(cell_coordinates))
-        throw InvalidCellException();
-    if(cell == Cell::Empty)
-        throw EmptyCellAssignmentException();
-    if(is_draw() || is_winner())
-        throw FullFieldAssignmentException();
-    
-    if(get(cell_coordinates) != Cell::Empty)
-        return false;
-    
-    hash_ -= binary_power<size_t>(
-        kHashBase,
-        cell_coordinates.first * kN + cell_coordinates.second
-    ) * getHash(get(cell_coordinates));
-
-    hash_ += binary_power<size_t>(
-        kHashBase,
-        cell_coordinates.first * kN + cell_coordinates.second
-    ) * getHash(cell);
-
-    free_cells_left_--;
-    field_[cell_coordinates.first][cell_coordinates.second] = cell;
-
-    for(auto &cell_coordinates: kCellsCoordinates){
-        if(get(cell_coordinates) == Cell::Empty)continue;
-
-        Cell target = get(cell_coordinates);
-
-        for(auto &d: kDelta){
-            bool ok = true;
-
-            pair<int, int> current_cell_coordinates = cell_coordinates;
-
-            for
-            (
-                int step = 0;
-                step < kN && ok;
-                step++,
-                current_cell_coordinates.first += d.first,
-                current_cell_coordinates.second += d.second
-            )
-                if
-                (
-                    !is_valid(current_cell_coordinates) ||
-                    get(current_cell_coordinates) != target
-                )
-                    ok = false;
-            
-            if(ok){
-                is_winner_ = true;
-                winner_= convert(target);
-                return true;
-            }
-        }
-    }
-
-    if(free_cells_left_ == 0)
-        is_draw_ = true;
-    
-    return true;
-}
-
-bool Field::is_occupied(const pair<int, int> &cell_coordinates) const{
-    if(!is_valid(cell_coordinates))
-        throw InvalidCellException();
-    
-    return field_[cell_coordinates.first][cell_coordinates.second] != Cell::Empty;
-}
-
-size_t Field::get_hash() const{
-    return hash_;
-}
-
-std::ostream& TicTacToe::operator<<(
-    std::ostream &strm,
-    const Field &field
-)
-{
-    for(int i = 0; i < kN; i++){
-        for(int j = 0; j < kN; j++)
-            strm << field.get(make_pair(i, j));
-        strm << std::endl;
+std::ostream& TicTacToe::operator<<(std::ostream &strm, const Field &rhs){
+    for(size_t i = 0; i < Field::kN; ++i)
+    {
+        for(size_t j = 0; j < Field::kN; ++j)
+            strm << static_cast<char>(rhs(i, j));
+        strm << ((i == Field::kN - 1) ? "" : "\n");
     }
 
     return strm;
 }
 
-bool TicTacToe::is_valid(pair<int, int> cell_coordinates){
-    return
-        cell_coordinates.first >= 0 &&
-        cell_coordinates.first < kN &&
-        cell_coordinates.second >= 0 &&
-        cell_coordinates.second < kN;
+bool Field::operator==(const Field &rhs) const{
+    for(size_t i = 0; i < kN; ++i)
+        for(size_t j = 0; j < kN; ++j)
+            if(operator()(i, j) == rhs(i, j))
+                return false;
+    return true;
 }
 
-pair<int, int> TicTacToe::get_difference(
-    const Field &l,
-    const Field &r
-)
-{
-    for(auto &it: kCellsCoordinates)
-        if(l.get(it) != r.get(it))
-            return it;
+Field &Field::operator=(const Field &rhs){
+    for(size_t i = 0; i < kN; ++i)
+        for(size_t j = 0; j < kN; ++j)
+            field_[i][j] = rhs(i, j);
+    freeCellsLeft_ = rhs.freeCellsLeft_;
+    return *this;
+}
+
+Field::Field(const Field &rhs){
+    operator=(rhs);
+}
+
+Player Field::whooseMove() const{
+    return (freeCellsLeft_ % 2 == (kN * kN) % 2)? Player::X(): Player::O();
+}
+
+Field::operator size_t() const{
+    size_t p{1}, res{0};
+    for(size_t i = 0; i < kN; ++i)
+        for(size_t j = 0; j < kN; ++j, p *= Cell::kBase)
+            res += p * static_cast<size_t>(operator()(i, j));
+    return res;
+}
+
+bool Field::isOccupied(size_t i, size_t j) const{
+    return at(i, j) != Cell::Empty();
+}
+
+void Field::set(size_t i, size_t j, const Player &p){
+    if(at(i, j) != Cell::Empty())
+        throw FieldCellOccupiedError(i, j);
+    if(p != whooseMove())
+        throw FieldMoveOrderError();
+    --freeCellsLeft_;
+    field_[i][j] = static_cast<Cell>(p);
+}
+
+const Cell& Field::operator()(size_t i, size_t j) const{
+    return field_[i][j];
+}
+
+const Cell& Field::at(size_t i, size_t j) const{
+    validate(i, j);
+    return operator()(i, j);
+}
+
+bool Field::isWinner(Player *winner) const{
+    static const std::array<std::pair<int, int>, 4>
+        directions{
+            std::make_pair(1, -1),
+            std::make_pair(1, 0),
+            std::make_pair(1, 1),
+            std::make_pair(0, 1)
+        };
     
-    throw SameFieldsException();
+    for(size_t i = 0; i < kN; ++i)
+        for(size_t j = 0; j < kN; ++j){
+            Cell current{operator()(i, j)};
+            if(current == Cell::Empty())
+                continue;
+
+            for(const auto &d :directions){
+                try{
+                    size_t ti{i}, tj{j};
+                    bool ok = true;
+                    for(size_t t = 0; t < kN; ++t, ti += d.first, tj += d.second)
+                        if(at(ti, tj) != current){
+                            ok = false;
+                            break;
+                        }
+                    if(ok){
+                        if(winner != nullptr)
+                            *winner = static_cast<Player>(current);
+                        return true;
+                    }
+                }
+                catch(const FieldOutOfBoundsError &e){
+                    continue;
+                }
+            }
+        }
+    
+    return false;
+}
+
+bool Field::isDraw() const{
+    return (!isWinner()) && freeCellsLeft_ == 0;
+}
+
+std::pair<size_t, size_t> Field::difference(const Field &rhs) const{
+    for(size_t i = 0; i < kN; ++i)
+        for(size_t j = 0; j < kN; ++j)
+            if(operator()(i, j) != rhs(i, j))
+                return std::make_pair(i, j);
+    throw FieldDifferenceError();
 }

@@ -2,31 +2,27 @@
 #define ABSTRACT_PLAYER_H_
 
 #include <string>
-
-#include "../Field/Field.h"
 #include "../Tokens/Tokens.h"
+#include "../Field/Field.h"
 
 namespace TicTacToe{
     class AbstractPlayer{
     public:
+        const Player player;
+        const std::string name;
 
         AbstractPlayer(
             Field &field,
-            Player player,
-            const std::string name
+            const Player &player,
+            const std::string &name
         );
 
-        virtual void make_move() = 0;
-        std::string get_name() const;
-        const Player& get_player() const;
-
+        virtual void makeMove() = 0;
         virtual ~AbstractPlayer() = default;
 
     protected:
-        const Player player;
-        Field &field;
-        const std::string name;
+        Field &field_;
     };
-}
+};
 
 #endif

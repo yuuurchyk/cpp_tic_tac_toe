@@ -4,26 +4,67 @@
 #include <cstddef>
 #include <ostream>
 
-#include "../Exceptions/Exceptions.h"
-
 namespace TicTacToe{
-    enum class Cell{
-        First, Second, Empty
-    };
-    enum class Player{
-        First, Second
+    class Cell;
+    class Player;
+
+    class Cell{
+    public:
+        static constexpr size_t kBase{3};
+
+        static Cell X();
+        static Cell O();
+        static Cell Empty();
+
+        Cell();
+
+        Cell(const Cell &rhs);
+        bool operator==(const Cell &rhs) const;
+        bool operator!=(const Cell &rhs) const;
+        Cell& operator=(const Cell &rhs);
+
+        explicit operator Player() const;
+        explicit operator size_t() const;
+        explicit operator char() const;
+    private:
+        static constexpr size_t
+            kEmptyType{0},
+            kXType{1},
+            kOType{2};
+
+        explicit Cell(size_t type);
+        size_t type_;
     };
 
-    extern const size_t kHashBase;
-    size_t getHash(const Cell &cell);
-    char getChar(const Cell &cell);
-    Player convert(const Cell &cell);
-    std::ostream& operator<<(std::ostream &strm, const Cell &cell);
+    std::ostream &operator<<(std::ostream &strm, const Cell &rhs);
 
-    Player opposite(const Player &player);
-    char getChar(const Player &player);
-    Cell convert(const Player &player);
-    std::ostream& operator<<(std::ostream &strm, const Player &player);
-}
+    class Player{
+    public:
+        static constexpr size_t kBase{2};
+
+        static Player X();
+        static Player O();
+
+        Player(const Player &rhs);
+        bool operator==(const Player &rhs) const;
+        bool operator!=(const Player &rhs) const;
+        Player& operator=(const Player &rhs);
+
+        Player& toggle();
+
+        explicit operator Cell() const;
+        explicit operator size_t() const;
+        explicit operator char() const;
+    private:
+        static constexpr size_t
+            kXType{0},
+            kOType{1};
+
+        explicit Player(size_t type);
+        size_t type_;
+    };
+
+    std::ostream &operator<<(std::ostream &strm, const Player &rhs);
+};
 
 #endif

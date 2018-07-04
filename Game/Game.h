@@ -1,38 +1,27 @@
 #ifndef GAME_H_
 #define GAME_H_
 
-#include <ostream>
-#include <vector>
-#include <map>
-#include <utility>
-
-#include "../Field/Field.h"
-#include "../Player/Player.h"
+#include "../Player/AbstractPlayer.h"
 #include "../Tokens/Tokens.h"
-#include "../Exceptions/Exceptions.h"
 
 namespace TicTacToe{
     class Game{
     public:
-        Game(
-            Field *field,
-            AbstractPlayer *first,
-            AbstractPlayer *second
-        );
+        Game(AbstractPlayer *playerX, AbstractPlayer *playerO, const Field &field);
 
-        bool is_winner() const;
-        bool is_draw() const;
-        bool is_winner(const Player &player) const;
+        bool isEnd() const;
+        bool isDraw() const;
+        bool isWinner(Player *winner=nullptr) const;
 
-        bool make_move();
-        std::string get_player_name(const Player &player) const;
+        std::string getPlayerName(const Player &player) const;
+
+        void makeMove();
     private:
-        Field *field;
-
-        std::map<Player, AbstractPlayer*>
-            players;
-        
-        Player current_player;
+        Player currentPlayer{Player::X()};
+        AbstractPlayer
+            *playerX,
+            *playerO;
+        const Field &field;
     };
 }
 

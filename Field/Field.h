@@ -1,51 +1,44 @@
 #ifndef FIELD_H_
 #define FIELD_H_
 
-#include "../Common/Common.h"
-#include "../Exceptions/Exceptions.h"
+#include <ostream>
+#include <cstddef>
+#include <array>
+#include <utility>
+
 #include "../Tokens/Tokens.h"
 
 namespace TicTacToe{
-    extern const int kN;
-
-    extern const std::vector<std::pair<int, int>> kCellsCoordinates;
-    extern const std::vector<std::pair<int, int>> kDelta;
-
     class Field{
     public:
+        static constexpr size_t kN{3};
+
+        bool isDraw() const;
+        bool isWinner(Player *winner=nullptr) const;
+
+        const Cell& at(size_t i, size_t j) const;
+        const Cell& operator()(size_t i, size_t j) const;
+        void set(size_t i, size_t j, const Player &p);
+        bool isOccupied(size_t i, size_t j) const;
+
+        operator size_t() const;
+
+        Player whooseMove() const;
+
         Field();
-        Field(const Field &other);
-        Field& operator=(const Field &other);
+        Field(const Field &rhs);
+        Field &operator=(const Field &rhs);
+        bool operator==(const Field &rhs) const;
 
-        bool is_draw() const;
-        bool is_winner() const;
-        bool is_winner(const Player &player)const;
-        bool is_occupied(const std::pair<int, int> &cell_coordinates) const;
+        std::pair<size_t, size_t> difference(const Field &rhs) const;
+    private:
+        inline static void validate(size_t i, size_t j);
 
-        size_t get_hash() const;
-
-        Cell get(const std::pair<int, int> &cell_coordinates) const;
-        bool set(
-            const std::pair<int, int> &cell_coordinates,
-            const Cell &cell);
-        
-        private:
-            size_t hash_;
-            std::vector<std::vector<Cell>> field_;
-
-            bool is_draw_;
-            bool is_winner_;
-            Player winner_;
-
-            int free_cells_left_;
+        size_t freeCellsLeft_{kN * kN};
+        std::array<std::array<Cell, kN>, kN> field_;
     };
 
-    bool is_valid(std::pair<int, int> cell_coordinates);
-    std::pair<int, int> get_difference(
-        const Field &l,
-        const Field &r);
-    
-    std::ostream& operator<<(std::ostream &strm, const Field &field);
+    std::ostream &operator<<(std::ostream &strm, const Field &rhs);
 }
 
 #endif

@@ -1,39 +1,24 @@
 #ifndef HUMAN_PLAYER_H_
 #define HUMAN_PLAYER_H_
 
-#include <iostream>
-
-#include "../Field/Field.h"
-#include "../Tokens/Tokens.h"
-#include "../Read/Read.h"
-
 #include "AbstractPlayer.h"
+#include "../Controller/AbstractController.h"
 
 namespace TicTacToe{
-    class HumanPlayer : public AbstractPlayer{
+    class HumanPlayer: public AbstractPlayer{
     public:
         HumanPlayer(
             Field &field,
-            std::istream &in_strm,
-            std::ostream &out_strm,
-            Player player,
-            const std::string name
+            const Player &player,
+            AbstractController *controller
         );
 
-        void make_move();
+        void makeMove();
 
-        ~HumanPlayer() = default;
-
-    private:
-        std::istream &in_strm;
-        std::ostream &out_strm;
+        virtual ~HumanPlayer() = default;
+    protected:
+        AbstractController * controller{nullptr};
     };
-
-    const std::string get_human_player_name(
-        std::istream &in_strm,
-        std::ostream &out_strm,
-        Player player
-    );
 }
 
 #endif

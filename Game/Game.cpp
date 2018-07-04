@@ -1,47 +1,45 @@
 #include "Game.h"
+#include "../Exceptions/CommonExceptions.h"
 
 using namespace TicTacToe;
 
 Game::Game(
-    Field *field,
-    AbstractPlayer *first,
-    AbstractPlayer *second
+    AbstractPlayer *playerX,
+    AbstractPlayer *playerO,
+    const Field &field
 ):
-    field(field),
-    current_player(Player::First)
+    playerX(playerX),
+    playerO(playerO),
+    field(field)
 {
-    if(first == nullptr || second == nullptr)
-        throw NoPlayerProvidedException();
-    if(first->get_player() == second->get_player())
-        throw SamePlayersException();
-    if(field == nullptr)
-        throw NoFieldProvidedException();
-
-    players.insert(std::make_pair(Player::First, first));
-    players.insert(std::make_pair(Player::Second, second));
+    if(playerX == nullptr || playerO == nullptr)
+        throw NullPointerError();
 }
 
-bool Game::make_move(){
-    if(field->is_draw() || field->is_winner())return false;
-
-    players[current_player]->make_move();
-    current_player = opposite(current_player);
-
-    return true;
+bool Game::isEnd() const{
+    return field.isDraw() || field.isWinner();
 }
 
-std::string Game::get_player_name(const Player &player) const{
-    return players.at(player)->get_name();
+bool Game::isDraw() const{
+    return field.isDraw();
 }
 
-bool Game::is_winner() const{
-    return field->is_winner();
+bool Game::isWinner(Player *winner) const{
+    return field.isWinner(winner);
 }
 
-bool Game::is_winner(const Player &player) const{
-    return field->is_winner(player);
+std::string Game::getPlayerName(const Player &player) const{
+    if(player == Player::X())
+        return playerX->name;
+    if(player == Player::O())
+        return playerO->name;
+    throw InternalLogicError();
 }
 
-bool Game::is_draw() const{
-    return field->is_draw();
+void Game::makeMove(){
+    if(currentPlayer == Player::X())
+        playerX->makeMove();
+    if(currentPlayer == Player::O())
+        playerO->makeMove();
+    currentPlayer.toggle();
 }

@@ -1,81 +1,123 @@
-#include <exception>
-
 #include "Tokens.h"
+#include "../Exceptions/TokensExceptions.h"
+#include "../Exceptions/CommonExceptions.h"
 
 using namespace TicTacToe;
 
-const size_t
-    TicTacToe::kHashBase = 3;
+Cell::Cell(size_t type):
+    type_(type)
+{}
 
-size_t TicTacToe::getHash(const Cell &cell){
-    switch(cell){
-        case Cell::Empty:
-            return 0;
-        case Cell::First:
-            return 1;
-        case Cell::Second:
-            return 2;
-        default:
-            throw std::runtime_error("error while hashing");
-    }
+Cell::Cell(const Cell &rhs):
+    type_(rhs.type_)
+{}
+
+bool Cell::operator==(const Cell &rhs) const{
+    return type_ == rhs.type_;
+}
+bool Cell::operator!=(const Cell &rhs) const{
+    return !(operator==(rhs));
 }
 
-char TicTacToe::getChar(const Cell &cell){
-    switch(cell){
-        case Cell::First:
-            return 'X';
-        case Cell::Second:
-            return 'O';
-        default:
+Cell& Cell::operator=(const Cell &rhs){
+    type_ = rhs.type_;
+    return *this;
+}
+
+Cell Cell::Empty(){
+    return Cell(kEmptyType);
+}
+Cell::Cell():
+    Cell(kEmptyType)
+{}
+Cell Cell::X(){
+    return Cell(kXType);
+}
+Cell Cell::O(){
+    return Cell(kOType);
+}
+Cell::operator char() const{
+    switch(type_){
+        case kEmptyType:
             return '-';
+        case kXType:
+            return 'X';
+        case kOType:
+            return 'O';
     }
+    throw InternalLogicError();
 }
 
-Player TicTacToe::convert(const Cell &cell){
-    switch(cell){
-        case Cell::First:
-            return Player::First;
-        case Cell::Second:
-            return Player::Second;
-        default:
-            throw ConvertionException();
-    }
-}
 
-std::ostream& TicTacToe::operator<<(std::ostream &strm, const Cell &cell){
-    strm << getChar(cell);
+std::ostream& TicTacToe::operator<<(std::ostream &strm, const Cell &rhs){
+    strm << static_cast<char>(rhs);
     return strm;
 }
 
-Player TicTacToe::opposite(const Player &player){
-    if(player == Player::First)
-        return Player::Second;
-    return Player::First;
+Cell::operator Player() const{
+    if(operator==(Cell::Empty()))
+        throw TokensConvertionError();
+    if(operator==(Cell::X()))
+        return Player::X();
+    return Player::O();
 }
 
-char TicTacToe::getChar(const Player &player){
-    switch(player){
-        case Player::First:
+Cell::operator size_t() const{
+    return type_;
+}
+
+Player::Player(size_t type):
+    type_(type)
+{}
+
+Player::Player(const Player &rhs):
+    type_(rhs.type_)
+{}
+
+bool Player::operator==(const Player &rhs) const{
+    return type_ == rhs.type_;
+}
+bool Player::operator!=(const Player &rhs) const{
+    return !(operator==(rhs));
+}
+
+Player& Player::operator=(const Player &rhs){
+    type_ = rhs.type_;
+    return *this;
+}
+
+Player Player::X(){
+    return Player(kXType);
+}
+Player Player::O(){
+    return Player(kOType);
+}
+Player::operator char() const{
+    switch(type_){
+        case kXType:
             return 'X';
-        case Player::Second:
+        case kOType:
             return 'O';
-        default:
-            return '-';
     }
+    throw InternalLogicError();
 }
 
-Cell TicTacToe::convert(const Player &player){
-    switch(player){
-        case Player::First:
-            return Cell::First;
-        case Player::Second:
-            return Cell::Second;
-        default:
-            throw ConvertionException();
-    }
-}
-
-std::ostream& TicTacToe::operator<<(std::ostream &strm, const Player &player){
-    strm << getChar(player);
+std::ostream& TicTacToe::operator<<(std::ostream &strm, const Player &rhs){
+    strm << static_cast<char>(rhs);
     return strm;
+}
+
+Player::operator Cell() const{
+    if(operator==(Player::X()))
+        return Cell::X();
+    return Cell::O();
+}
+
+Player::operator size_t() const{
+    return type_;
+}
+
+Player& Player::toggle(){
+    type_ ^= 1;
+    return *this;
 }

@@ -1,38 +1,31 @@
+#include <vector>
+#include <string>
+#include <cstdlib>
+
 #include "MediumBot.h"
+#include "../FieldTree/MediumBotFieldTree.h"
 
 using namespace TicTacToe;
 
-MediumBot::MediumBot(
-    Field &field,
-    Player player,
-    const std::string name
-):
-    AbstractPlayer
-    (
-        field,
-        player,
-        name
-    )
-    {}
-
-void MediumBot::make_move(){
-    MediumBotFieldTree tree(
-        field,
-        player,
-        player
-    );
-
-    field.set(tree.predict(), convert(player));
+namespace{
+    const std::vector<std::string>
+        mediumBotNames{
+            "Jim",
+            "Bill",
+            "Cortana",
+            "Mike",
+            "Helen"
+        };
+    std::string chooseMediumBotName(){
+        return mediumBotNames.at(rand() % mediumBotNames.size());
+    }
 }
 
-const std::vector<std::string>
-    TicTacToe::medium_bot_names = {
-        "Ivan medium bot",
-        "Helen medium bot",
-        "George medium bot",
-        "Luka medium bot"
-    };
+MediumBot::MediumBot(Field &field, const Player &player):
+    AbstractPlayer(field, player, chooseMediumBotName())
+{}
 
-const std::string TicTacToe::get_medium_bot_player_name(){
-    return medium_bot_names[get_random_number(0, medium_bot_names.size() - 1)];
+void MediumBot::makeMove(){
+    auto res = MediumBotFieldTree(field_, player).predict();
+    field_.set(res.first, res.second, player);
 }

@@ -1,19 +1,20 @@
-#include "FieldTree.h"
+#include "MediumBotFieldTree.h"
+#include "../Exceptions/CommonExceptions.h"
+#include "../Exceptions/FieldTreeExceptions.h"
 
 using namespace TicTacToe;
 
 MediumBotFieldTree::MediumBotFieldTree(
     const Field &field,
-    const Player &current_player,
-    const Player &target_player
+    const Player &currentPlayer
 ):
     field_(field),
-    current_player_(current_player),
-    target_player_(target_player),
-    is_root_(true),
+    currentPlayer_(currentPlayer),
+    targetPlayer_(currentPlayer),
+    isRoot_(true),
     storage_(new std::map<size_t, MediumBotFieldTree * const>)
 {
-    storage_->insert(std::make_pair(field.get_hash(), this));
+    storage_->insert(std::make_pair(static_cast<size_t>(field), this));
     init();
 }
 
@@ -24,9 +25,9 @@ MediumBotFieldTree::MediumBotFieldTree(
     std::map<size_t, MediumBotFieldTree * const> * const storage
 ):
     field_(field),
-    current_player_(current_player),
-    target_player_(target_player),
-    is_root_(false),
+    currentPlayer_(current_player),
+    targetPlayer_(target_player),
+    isRoot_(false),
     storage_(storage)
 {
     init();
@@ -34,46 +35,52 @@ MediumBotFieldTree::MediumBotFieldTree(
 
 void MediumBotFieldTree::init(){
     if(storage_ == nullptr)
-        throw NoStorageProvidedException();
+        throw NullPointerError();
 
-    if(field_.is_draw() || field_.is_winner(target_player_)){
-        is_winning_ = true;
+    bool draw = field_.isDraw();
+
+    Player winner = Player::X();
+    bool isWinner = field_.isWinner(&winner);
+
+    if(draw || (isWinner && winner == targetPlayer_)){
+        isWinning_ = true;
         return;
     }
-    if(field_.is_winner(opposite(target_player_))){
-        is_winning_ = false;
+    if(isWinner && winner == Player(targetPlayer_).toggle()){
+        isWinning_ = false;
         return;
     }
 
     grow();
 
-    if(current_player_ == target_player_){
-        is_winning_ = false;
+    if(currentPlayer_ == targetPlayer_){
+        isWinning_ = false;
         for(auto child: children_)
-            if(child->is_winning()){
-                is_winning_ = true;
+            if(child->isWinning()){
+                isWinning_ = true;
                 return;
             }
     }
     else{
-        is_winning_ = true;
+        isWinning_ = true;
         for(auto child: children_)
-            if(!child->is_winning()){
-                is_winning_ = false;
+            if(!child->isWinning()){
+                isWinning_ = false;
                 return;
             }
     }
 }
 
 void MediumBotFieldTree::grow(){
-    for(auto &cell: kCellsCoordinates){
-        if(field_.is_occupied(cell))continue;
+    for(size_t i = 0; i < Field::kN; ++i)
+        for(size_t j = 0; j < Field::kN; ++j){
+            if(field_.isOccupied(i, j))continue;
 
-        Field tmp{field_};
-        if(!tmp.set(cell, convert(current_player_))) continue;
+            Field tmp{field_};
+            tmp.set(i, j, currentPlayer_);
 
-        children_.push_back(get(tmp, opposite(current_player_), target_player_));
-    }
+            children_.push_back(get(tmp, Player(currentPlayer_).toggle(), targetPlayer_));
+        }
 }
 
 MediumBotFieldTree * const MediumBotFieldTree::get(
@@ -82,7 +89,7 @@ MediumBotFieldTree * const MediumBotFieldTree::get(
     const Player &target_player
 )
 {
-    auto itr = storage_->find(field.get_hash());
+    auto itr = storage_->find(static_cast<size_t>(field));
     if(itr != storage_->end())
         return itr->second;
     
@@ -93,13 +100,13 @@ MediumBotFieldTree * const MediumBotFieldTree::get(
         storage_
     );
 
-    storage_->insert(std::make_pair(field.get_hash(),tmp));
+    storage_->insert(std::make_pair(static_cast<size_t>(field),tmp));
 
-    return storage_->at(field.get_hash());
+    return storage_->at(static_cast<size_t>(field));
 }
 
 MediumBotFieldTree::~MediumBotFieldTree(){
-    if(is_root_){
+    if(isRoot_){
         for(auto itr=storage_->begin(); itr != storage_->end(); ++itr)
             if(itr->second != this)
                 delete itr->second;
@@ -108,27 +115,27 @@ MediumBotFieldTree::~MediumBotFieldTree(){
     }
 }
 
-bool MediumBotFieldTree::is_winning() const{
-    return is_winning_;
+bool MediumBotFieldTree::isWinning() const{
+    return isWinning_;
 }
 
-const Field& MediumBotFieldTree::get_field() const{
+const Field& MediumBotFieldTree::getField() const{
     return field_;
 }
 
-std::pair<int, int> MediumBotFieldTree::predict() const{
-    if(target_player_ != current_player_)
-        throw InvalidPredictionException();
+std::pair<size_t, size_t> MediumBotFieldTree::predict() const{
+    if(targetPlayer_ != currentPlayer_)
+        throw FieldTreePredictionError();
     
     if(children_.size() == 0)
-        throw FullFieldAssignmentException();
+        throw FieldTreeFullFieldPredictionError();
     
-    if(!is_winning_)
-        return get_difference(field_, (*children_.begin())->get_field());
+    if(!isWinning_)
+        return field_.difference((*children_.begin())->getField());
     
     for(auto child: children_)
-        if(child->is_winning())
-            return get_difference(field_, child->get_field());
+        if(child->isWinning())
+            return field_.difference(child->getField());
     
-    throw InternalLogicException();
+    throw InternalLogicError();
 }
